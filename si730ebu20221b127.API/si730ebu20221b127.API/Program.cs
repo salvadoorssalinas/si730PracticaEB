@@ -1,11 +1,19 @@
 using si730ebu20221b127.API.Shared.Interfaces.ASP.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using si730ebu20221b127.API.Assessment.Application.Internal.CommandServices;
+using si730ebu20221b127.API.Assessment.Application.Internal.OutboundServices.ACL;
+using si730ebu20221b127.API.Assessment.Application.Internal.QueryServices;
+using si730ebu20221b127.API.Assessment.Domain.Repositories;
+using si730ebu20221b127.API.Assessment.Domain.Services;
+using si730ebu20221b127.API.Assessment.Infrastructure.Persistence.EFC.Repositories;
 using si730ebu20221b127.API.Personnel.Application.Internal.CommandServices;
 using si730ebu20221b127.API.Personnel.Application.Internal.QueryServices;
 using si730ebu20221b127.API.Personnel.Domain.Repositories;
 using si730ebu20221b127.API.Personnel.Domain.Services;
 using si730ebu20221b127.API.Personnel.Infrastructure.Persistence.EFC.Repositories;
+using si730ebu20221b127.API.Personnel.Interfaces.ACL;
+using si730ebu20221b127.API.Personnel.Interfaces.ACL.Services;
 using si730ebu20221b127.API.Shared.Domain.Repositories;
 using si730ebu20221b127.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 using si730ebu20221b127.API.Shared.Infrastructure.Persistence.EFC.Repositories;
@@ -83,6 +91,13 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IExaminerRepository, ExaminerRepository>();
 builder.Services.AddScoped<IExaminerCommandService, ExaminerCommandService>();
 builder.Services.AddScoped<IExaminerQueryService, ExaminerQueryService>();
+builder.Services.AddScoped<IPersonnelContextFacade, PersonnelContextFacade>(); // ACL Context Facade
+
+// Assessment Bounded Context Injection Configuration
+builder.Services.AddScoped<IMentalStateExamRepository, MentalStateExamRepository>();
+builder.Services.AddScoped<IMentalStateExamCommandService, MentalStateExamCommandService>();
+builder.Services.AddScoped<IMentalStateExamQueryService, MentalStateExamQueryService>();
+builder.Services.AddScoped<ExternalPersonnelService>(); // ACL External Service
 
 var app = builder.Build();
 

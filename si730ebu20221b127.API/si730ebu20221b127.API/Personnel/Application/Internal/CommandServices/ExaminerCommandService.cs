@@ -1,5 +1,6 @@
 ﻿using si730ebu20221b127.API.Personnel.Domain.Model.Aggregates;
 using si730ebu20221b127.API.Personnel.Domain.Model.Commands;
+using si730ebu20221b127.API.Personnel.Domain.Model.ValueObjects;
 using si730ebu20221b127.API.Personnel.Domain.Repositories;
 using si730ebu20221b127.API.Personnel.Domain.Services;
 using si730ebu20221b127.API.Shared.Domain.Repositories;
@@ -18,8 +19,12 @@ public class ExaminerCommandService(IExaminerRepository examinerRepository, IUni
             Console.WriteLine($"Examiner with NPI {command.NationalProviderIdentifier} already exists.");
             return null;
         }
+
+        var firstName = new FirstName(command.FirstName);
+        var lastName = new LastName(command.LastName);
+        var nationalProviderIdentifier = new NationalProviderIdentifier(command.NationalProviderIdentifier);
         
-        var examiner = new Examiner(command);
+        var examiner = new Examiner(firstName, lastName, nationalProviderIdentifier);
         try
         {
             await examinerRepository.AddAsync(examiner);

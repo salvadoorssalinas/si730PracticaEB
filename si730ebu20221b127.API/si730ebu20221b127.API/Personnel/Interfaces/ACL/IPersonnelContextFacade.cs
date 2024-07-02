@@ -1,6 +1,8 @@
-﻿namespace si730ebu20221b127.API.Personnel.Interfaces.ACL;
+﻿using si730ebu20221b127.API.Personnel.Domain.Model.Aggregates;
+
+namespace si730ebu20221b127.API.Personnel.Interfaces.ACL;
 
 public interface IPersonnelContextFacade
 {
-    Task<int> FetchExaminerIdByNationalProviderIdentifier(string nationalProviderIdentifier);
+    Task<Examiner?> FetchExaminerByNationalProviderIdentifier(string nationalProviderIdentifier);
 }

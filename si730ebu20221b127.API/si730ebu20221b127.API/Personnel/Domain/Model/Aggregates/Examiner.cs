@@ -1,4 +1,5 @@
-﻿using si730ebu20221b127.API.Personnel.Domain.Model.Commands;
+﻿using si730ebu20221b127.API.Assessment.Domain.Model.Aggregates;
+using si730ebu20221b127.API.Personnel.Domain.Model.Commands;
 using si730ebu20221b127.API.Personnel.Domain.Model.ValueObjects;
 
 namespace si730ebu20221b127.API.Personnel.Domain.Model.Aggregates;
@@ -40,4 +41,5 @@ public partial class Examiner
     public FirstName FirstName { get; set; }
     public LastName LastName { get; set; }
     public NationalProviderIdentifier NationalProviderIdentifier { get; set; }
+    public ICollection<MentalStateExam> MentalStateExams { get; }
 }
