@@ -53,18 +53,7 @@ public class MentalStateExamCommandService(IMentalStateExamRepository mentalStat
             Console.WriteLine("Language score must be between 0 and 9.");
             return null;
         }
-        var examDate = new ExamDate(command.ExamDate);
-        var mentalStateExam = new MentalStateExam(
-            command.PatientId,
-            examDate,
-            command.OrientationScore,
-            command.RegistrationScore,
-            command.AttentionAndCalculationScore,
-            command.RecallScore,
-            command.LanguageScore,
-            new NationalProviderIdentifier(command.ExaminerNationalProviderIdentifier),
-            examiner
-            );
+        var mentalStateExam = new MentalStateExam(command, examiner);
         try
         {
             await mentalStateExamRepository.AddAsync(mentalStateExam);

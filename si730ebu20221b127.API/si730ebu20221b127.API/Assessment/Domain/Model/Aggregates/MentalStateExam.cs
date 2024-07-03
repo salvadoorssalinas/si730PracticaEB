@@ -1,4 +1,5 @@
-﻿using si730ebu20221b127.API.Assessment.Domain.Model.ValueObjects;
+﻿using si730ebu20221b127.API.Assessment.Domain.Model.Commands;
+using si730ebu20221b127.API.Assessment.Domain.Model.ValueObjects;
 using si730ebu20221b127.API.Personnel.Domain.Model.Aggregates;
 using si730ebu20221b127.API.Personnel.Domain.Model.ValueObjects;
 
@@ -21,6 +22,20 @@ public partial class MentalStateExam
         RecallScore = recallScore;
         LanguageScore = languageScore;
         ExaminerNationalProviderIdentifier = examinerNationalProviderIdentifier;
+        Examiner = examiner;
+        ExaminerId = examiner.Id;
+    }
+
+    public MentalStateExam(CreateMentalStateExamCommand command, Examiner examiner)
+    {
+        PatientId = command.PatientId;
+        ExamDate = new ExamDate(command.ExamDate);
+        OrientationScore = command.OrientationScore;
+        RegistrationScore = command.RegistrationScore;
+        AttentionAndCalculationScore = command.AttentionAndCalculationScore;
+        RecallScore = command.RecallScore;
+        LanguageScore = command.LanguageScore;
+        ExaminerNationalProviderIdentifier = new NationalProviderIdentifier(command.ExaminerNationalProviderIdentifier);
         Examiner = examiner;
         ExaminerId = examiner.Id;
     }
