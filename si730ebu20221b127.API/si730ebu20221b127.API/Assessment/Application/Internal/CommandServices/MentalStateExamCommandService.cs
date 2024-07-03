@@ -18,40 +18,33 @@ public class MentalStateExamCommandService(IMentalStateExamRepository mentalStat
         var examiner = await externalPersonnelService.FetchExaminerByNationalProviderIdentifier(command.ExaminerNationalProviderIdentifier);
         if (examiner is null)
         {
-            Console.WriteLine("Examiner not found");
-            return null;
+            throw new Exception("Examiner not found");
         }
         // check if date is in the future
         if (command.ExamDate > DateTime.Now)
         {
-            Console.WriteLine("Exam date cannot be in the future.");
-            return null;
+            throw new Exception("Exam date cannot be in the future.");
         }
         // check score values
         if (command.OrientationScore < 0 || command.OrientationScore > 10)
         {
-            Console.WriteLine("Orientation score must be between 0 and 10.");
-            return null;
+            throw new Exception("Orientation score must be between 0 and 10.");
         }
         if (command.RegistrationScore < 0 || command.RegistrationScore > 3)
         {
-            Console.WriteLine("Registration score must be between 0 and 3.");
-            return null;
+            throw new Exception("Registration score must be between 0 and 3.");
         }
         if (command.AttentionAndCalculationScore < 0 || command.AttentionAndCalculationScore > 5)
         {
-            Console.WriteLine("Attention and calculation score must be between 0 and 5.");
-            return null;
+            throw new Exception("Attention and calculation score must be between 0 and 5.");
         }
         if (command.RecallScore < 0 || command.RecallScore > 3)
         {
-            Console.WriteLine("Recall score must be between 0 and 3.");
-            return null;
+            throw new Exception("Recall score must be between 0 and 3.");
         }
         if (command.LanguageScore < 0 || command.LanguageScore > 9)
         {
-            Console.WriteLine("Language score must be between 0 and 9.");
-            return null;
+            throw new Exception("Language score must be between 0 and 9.");
         }
         var mentalStateExam = new MentalStateExam(command, examiner);
         try
@@ -62,8 +55,7 @@ public class MentalStateExamCommandService(IMentalStateExamRepository mentalStat
         }
         catch (Exception e)
         {
-            Console.WriteLine($"An error occurred while adding a mental state exam: {e.Message}");
-            return null;
+            throw new Exception($"An error occurred while adding a mental state exam: {e.Message}");
         }
     }
 }

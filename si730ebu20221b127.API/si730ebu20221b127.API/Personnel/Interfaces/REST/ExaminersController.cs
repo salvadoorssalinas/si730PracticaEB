@@ -16,11 +16,18 @@ public class ExaminersController(IExaminerCommandService examinerCommandService,
     [HttpPost]
     public async Task<IActionResult> CreateExaminer([FromBody] CreateExaminerResource resource)
     {
-        var createExaminerCommand = CreateExaminerCommandFromResourceAssembler.ToCommandFromResource(resource);
-        var examiner = await examinerCommandService.Handle(createExaminerCommand);
-        if (examiner is null) return BadRequest();
-        var examinerResource = ExaminerResourceFromEntityAssembler.ToResourceFromEntity(examiner);
-        return CreatedAtAction(nameof(GetExaminerById), new { id = examinerResource.Id }, examinerResource);
+        try
+        {
+            var createExaminerCommand = CreateExaminerCommandFromResourceAssembler.ToCommandFromResource(resource);
+            var examiner = await examinerCommandService.Handle(createExaminerCommand);
+            if (examiner is null) return BadRequest();
+            var examinerResource = ExaminerResourceFromEntityAssembler.ToResourceFromEntity(examiner);
+            return CreatedAtAction(nameof(GetExaminerById), new { id = examinerResource.Id }, examinerResource);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
 
@@ -29,7 +36,7 @@ public class ExaminersController(IExaminerCommandService examinerCommandService,
     {
         var getExaminerByIdQuery = new GetExaminerByIdQuery(id);
         var examiner = await examinerQueryService.Handle(getExaminerByIdQuery);
-        if (examiner == null) return NotFound();
+        if (examiner == null) return NotFound("Examiner not found.");
         var examinerResource = ExaminerResourceFromEntityAssembler.ToResourceFromEntity(examiner);
         return Ok(examinerResource);
     }

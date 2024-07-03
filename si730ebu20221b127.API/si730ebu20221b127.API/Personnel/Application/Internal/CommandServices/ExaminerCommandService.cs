@@ -16,8 +16,7 @@ public class ExaminerCommandService(IExaminerRepository examinerRepository, IUni
         var existingExaminer = await examinerRepository.FindByNationalProviderIdentifierAsync(command.NationalProviderIdentifier);
         if (existingExaminer != null)
         {
-            Console.WriteLine($"Examiner with NPI {command.NationalProviderIdentifier} already exists.");
-            return null;
+            throw new Exception($"Examiner with NPI {command.NationalProviderIdentifier} already exists.");
         }
 
         var firstName = new FirstName(command.FirstName);
@@ -33,8 +32,7 @@ public class ExaminerCommandService(IExaminerRepository examinerRepository, IUni
         }
         catch (Exception e)
         {
-            Console.WriteLine($"An error occurred while creating the profile: {e.Message}");
-            return null;
+            throw new Exception($"An error occurred while creating the profile: {e.Message}");
         }
     }
 }

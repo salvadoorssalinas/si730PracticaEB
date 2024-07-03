@@ -16,13 +16,21 @@ public class MentalStateExamsController(IMentalStateExamCommandService mentalSta
     [HttpPost]
     public async Task<IActionResult> CreateMentalStateExam([FromBody] CreateMentalStateExamResource resource)
     {
-        var createMentalStateExamCommand =
-            CreateMentalStateExamCommandFromResourceAssembler.ToCommandFromResource(resource);
-        var mentalStateExam = await mentalStateExamCommandService.Handle(createMentalStateExamCommand);
-        if (mentalStateExam is null) return BadRequest();
-        var mentalStateExamResource = MentalStateExamResourceFromEntityAssembler.ToResourceFromEntity(mentalStateExam);
-        return CreatedAtAction(nameof(GetMentalStateExamById), new { id = mentalStateExam.Id },
-            mentalStateExamResource);
+        try
+        {
+            var createMentalStateExamCommand =
+                CreateMentalStateExamCommandFromResourceAssembler.ToCommandFromResource(resource);
+            var mentalStateExam = await mentalStateExamCommandService.Handle(createMentalStateExamCommand);
+            if (mentalStateExam is null) return BadRequest();
+            var mentalStateExamResource =
+                MentalStateExamResourceFromEntityAssembler.ToResourceFromEntity(mentalStateExam);
+            return CreatedAtAction(nameof(GetMentalStateExamById), new { id = mentalStateExam.Id },
+                mentalStateExamResource);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpGet("{id:int}")]
@@ -30,7 +38,7 @@ public class MentalStateExamsController(IMentalStateExamCommandService mentalSta
     {
         var getMentalStateExamByIdQuery = new GetMentalStateExamByIdQuery(id);
         var mentalStateExam = await mentalStateExamQueryService.Handle(getMentalStateExamByIdQuery);
-        if (mentalStateExam is null) return NotFound();
+        if (mentalStateExam is null) return NotFound("Mental State Exam not found.");
         var mentalStateExamResource = MentalStateExamResourceFromEntityAssembler.ToResourceFromEntity(mentalStateExam);
         return Ok(mentalStateExamResource);
     }
